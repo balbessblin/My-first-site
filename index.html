@@ -1,0 +1,657 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фауна Белгорода</title>
+    <style>
+        :root {
+            --primary-color: #2c843e;
+            --secondary-color: #5cb85c;
+            --dark-color: #1a3a27;
+            --light-color: #f8f9fa;
+            --text-color: #333;
+            --text-light: #6c757d;
+            --redbook-color: #e63946;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: var(--light-color);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            background-color: var(--dark-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+            nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            nav li {
+                margin: 0 1rem;
+            }
+
+            nav a {
+                color: white;
+                text-decoration: none;
+                font-weight: 500;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+            }
+
+                nav a:hover {
+                    background-color: rgba(255,255,255,0.2);
+                }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .redbook-title {
+            color: var(--redbook-color);
+            border-bottom: 2px solid var(--redbook-color);
+        }
+
+        .animal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .animal-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .animal-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+
+        .redbook-card {
+            border-left: 4px solid var(--redbook-color);
+        }
+
+        .animal-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .animal-info {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .animal-info h3 {
+                color: var(--primary-color);
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+            }
+
+        .redbook-card .animal-info h3 {
+            color: var(--redbook-color);
+        }
+
+        .animal-info p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .animal-meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .redbook-badge {
+            background-color: var(--redbook-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .back-to-top {
+            display: block;
+            text-align: center;
+            margin: 2rem 0;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .back-to-top:hover {
+                text-decoration: underline;
+            }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+            .footer-links a {
+                color: white;
+                text-decoration: none;
+            }
+
+                .footer-links a:hover {
+                    text-decoration: underline;
+                }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav li {
+                margin: 0.3rem 0;
+            }
+
+            .animal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Фауна Белгорода и Белгородской области</h1>
+            <p>Изучаем разнообразие животного мира нашего региона</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#mammals">Млекопитающие</a></li>
+            <li><a href="#birds">Птицы</a></li>
+            <li><a href="#reptiles">Пресмыкающиеся</a></li>
+            <li><a href="#insects">Насекомые</a></li>
+            <li><a href="#redbook">Красная книга</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="intro">
+            <h2 class="section-title">О животном мире Белгородской области</h2>
+            <p>Белгородская область обладает богатым животным миром, включающим более 15 тысяч видов. На территории региона встречаются как типичные для лесостепной зоны виды, так и редкие, занесенные в Красную книгу. Особое разнообразие наблюдается среди насекомых и пресмыкающихся, многие из которых являются эндемиками региона.</p>
+        </section>
+
+        <section id="mammals">
+            <h2 class="section-title">Млекопитающие</h2>
+
+            <div class="animal-grid">
+                <div class="animal-card">
+                    <img src="images/fox1.jpg" alt="Лиса обыкновенная">
+                    <div class="animal-info">
+                        <h3>Лиса обыкновенная</h3>
+                        <p>Один из самых распространенных хищников региона. Обитает в лесах, степях и даже вблизи населенных пунктов.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 90 см</span>
+                            <span>Вес: до 10 кг</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images/moose1.jpg" alt="Лось">
+                    <div class="animal-info">
+                        <h3>Лось</h3>
+                        <p>Крупнейшее копытное животное области. Встречается в лесных массивах, особенно в Шебекинском и Валуйском районах.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 3 м</span>
+                            <span>Вес: до 600 кг</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\0d8c94a22978849841f7109935659452.jpg" alt="Заяц-русак">
+                    <div class="animal-info">
+                        <h3>Заяц-русак</h3>
+                        <p>Крупный заяц, типичный обитатель открытых пространств. Летом мех серо-коричневый, зимой светлеет.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 68 см</span>
+                            <span>Вес: до 7 кг</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\6ba3c7229b90e685744087e553a63b75.jpg" alt="Кабан">
+                    <div class="animal-info">
+                        <h3>Кабан</h3>
+                        <p>Крупное всеядное животное. Обитает в лесах, особенно в пойменных дубравах. Важный объект охоты в регионе.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 2 м</span>
+                            <span>Вес: до 200 кг</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\косуля.jpg" alt="Косуля европейская">
+                    <div class="animal-info">
+                        <h3>Косуля европейская</h3>
+                        <p>Изящное парнокопытное животное. Обитает в лесах и лесостепях. Важное звено в пищевой цепи региона.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 130 см</span>
+                            <span>Вес: 20-35 кг</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ Наверх</a>
+        </section>
+
+        <section id="birds">
+            <h2 class="section-title">Птицы</h2>
+
+            <div class="animal-grid">
+                <div class="animal-card">
+                    <img src="images/eagle.jpg" alt="Орел-могильник">
+                    <div class="animal-info">
+                        <h3>Орел-могильник</h3>
+                        <p>Редкая хищная птица, занесенная в Красную книгу России. Гнездится в старых лесных массивах.</p>
+                        <div class="animal-meta">
+                            <span>Размах крыльев: до 2 м</span>
+                            <span class="redbook-badge">Красная книга</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images/bird.jpg" alt="Обыкновенная овсянка">
+                    <div class="animal-info">
+                        <h3>Обыкновенная овсянка</h3>
+                        <p>Мелкая певчая птица, характерный обитатель опушек и лесных полян. Встречается с апреля по октябрь.</p>
+                        <div class="animal-meta">
+                            <span>Длина: 16 см</span>
+                            <span>Перелетная</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\1806d0f2fc5c86db636063b2f5bdb7f9.jpg" alt="Обыкновенная пустельга">
+                    <div class="animal-info">
+                        <h3>Обыкновенная пустельга</h3>
+                        <p>Небольшой сокол, часто встречающийся в открытых ландшафтах. Характерен "трясущийся" полет при охоте.</p>
+                        <div class="animal-meta">
+                            <span>Размах крыльев: 75 см</span>
+                            <span>Хищник</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\1-4.jpg" alt="Удод">
+                    <div class="animal-info">
+                        <h3>Удод</h3>
+                        <p>Ярко окрашенная птица с характерным хохолком. Обитает в открытых ландшафтах с редкими деревьями.</p>
+                        <div class="animal-meta">
+                            <span>Длина: 30 см</span>
+                            <span>Перелетная</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\HJTcYRoA76Q.jpg" alt="Серая неясыть">
+                    <div class="animal-info">
+                        <h3>Серая неясыть</h3>
+                        <p>Крупная сова, обитающая в лесах области. Ночной хищник, питающийся грызунами и мелкими птицами.</p>
+                        <div class="animal-meta">
+                            <span>Размах крыльев: 1 м</span>
+                            <span>Ночная</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ Наверх</a>
+        </section>
+
+        <section id="reptiles">
+            <h2 class="section-title">Пресмыкающиеся</h2>
+
+            <div class="animal-grid">
+                <div class="animal-card">
+                    <img src="images/snake.jpg" alt="Обыкновенная гадюка">
+                    <div class="animal-info">
+                        <h3>Обыкновенная гадюка</h3>
+                        <p>Единственная ядовитая змея региона. Обитает в лесах, на опушках, болотах. Укус опасен для человека.</p>
+                        <div class="animal-meta">
+                            <span>Длина: 50-70 см</span>
+                            <span>Ядовитая</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images/lizard.jpg" alt="Прыткая ящерица">
+                    <div class="animal-info">
+                        <h3>Прыткая ящерица</h3>
+                        <p>Самая распространенная ящерица области. Обитает на сухих прогреваемых участках. Способна отбрасывать хвост.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 25 см</span>
+                            <span>Дневная</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\6cdd17a037a7707d0e02babf23708231.jpg" alt="Болотная черепаха">
+                    <div class="animal-info">
+                        <h3>Болотная черепаха</h3>
+                        <p>Единственный вид черепах в регионе. Обитает в стоячих или слабопроточных водоемах. Зимует на дне.</p>
+                        <div class="animal-meta">
+                            <span>Длина панциря: 23 см</span>
+                            <span>Водная</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\original_photo-thumb_1920.jpg" alt="Обыкновенный уж">
+                    <div class="animal-info">
+                        <h3>Обыкновенный уж</h3>
+                        <p>Неядовитая змея с желтыми "ушными" пятнами. Обитает около водоемов. Может притворяться мертвым.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 1,5 м</span>
+                            <span>Безопасен</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card redbook-card">
+                    <img src="images\istockphoto-496686923-170667a.jpg" alt="Ломкая веретеница">
+                    <div class="animal-info">
+                        <h3>Ломкая веретеница</h3>
+                        <p>Безногая ящерица, похожая на змею. Обитает в лесах, на опушках. Включена в списки охраняемых видов.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 50 см</span>
+                            <span class="redbook-badge">Категория 4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ Наверх</a>
+        </section>
+
+        <section id="insects">
+            <h2 class="section-title">Насекомые</h2>
+
+            <div class="animal-grid">
+                <div class="animal-card redbook-card">
+                    <img src="images/bug.jpg" alt="Дыбка степная">
+                    <div class="animal-info">
+                        <h3>Дыбка степная</h3>
+                        <p>Крупный кузнечик, занесенный в Красную книгу. Обитает в целинных степях. Хищник, питается другими насекомыми.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 8 см</span>
+                            <span class="redbook-badge">Категория 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card redbook-card">
+                    <img src="images/bug1.jpg" alt="Медведица-госпожа">
+                    <div class="animal-info">
+                        <h3>Медведица-госпожа</h3>
+                        <p>Красивая бабочка с размахом крыльев до 5 см. Включена в Красную книгу Белгородской области.</p>
+                        <div class="animal-meta">
+                            <span>Размах крыльев: 5 см</span>
+                            <span class="redbook-badge">Категория 2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\IMG_8694-1.jpg" alt="Скакун полевой">
+                    <div class="animal-info">
+                        <h3>Скакун полевой</h3>
+                        <p>Ярко окрашенный жук-хищник. Обитает на песчаных почвах. Отличается быстрым бегом и полетом.</p>
+                        <div class="animal-meta">
+                            <span>Длина: 1,5 см</span>
+                            <span>Хищник</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\6795.jpg" alt="Богомол обыкновенный">
+                    <div class="animal-info">
+                        <h3>Богомол обыкновенный</h3>
+                        <p>Крупное хищное насекомое. Обитает в степных и лесостепных биотопах. Расширяет ареал на север.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 7 см</span>
+                            <span>Хищник</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card">
+                    <img src="images\nasekomie-117.jpg" alt="Златоглазка обыкновенная">
+                    <div class="animal-info">
+                        <h3>Златоглазка обыкновенная</h3>
+                        <p>Изящное насекомое с прозрачными крыльями. Личинки уничтожают тлей. Важный агент биозащиты растений.</p>
+                        <div class="animal-meta">
+                            <span>Размах крыльев: 3 см</span>
+                            <span>Полезная</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card redbook-card">
+                    <img src="images\maxresdefault.jpg" alt="Жук-олень">
+                    <div class="animal-info">
+                        <h3>Жук-олень</h3>
+                        <p>Крупнейший жук Европы. Самцы имеют массивные "рога". Занесен в Красную книгу как уязвимый вид.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 9 см</span>
+                            <span class="redbook-badge">Категория 2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ Наверх</a>
+        </section>
+
+        <section id="redbook">
+            <h2 class="section-title redbook-title">Красная книга Белгородской области</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">В Красную книгу Белгородской области включены 269 видов животных, нуждающихся в особой охране.</p>
+
+            <div class="animal-grid">
+                <!-- Млекопитающие из Красной книги -->
+                <div class="animal-card redbook-card">
+                    <img src="images\scale_1200.jpg" alt="Выхухоль русская">
+                    <div class="animal-info">
+                        <h3>Выхухоль русская</h3>
+                        <p>Редкий реликтовый вид, эндемик Восточной Европы. Обитает в пойменных водоёмах. Находится под угрозой исчезновения.</p>
+                        <div class="animal-meta">
+                            <span>Длина: 18-22 см</span>
+                            <span class="redbook-badge">Категория 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card redbook-card">
+                    <img src="images\oBAAAgHHJ-A-1920.jpg" alt="Степной сурок">
+                    <div class="animal-info">
+                        <h3>Степной сурок (байбак)</h3>
+                        <p>Крупный грызун, обитатель целинных степей. Численность сокращается из-за распашки степей.</p>
+                        <div class="animal-meta">
+                            <span>Длина: 50-70 см</span>
+                            <span class="redbook-badge">Категория 2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Птицы из Красной книги -->
+                <div class="animal-card redbook-card">
+                    <img src="images\2977.jpg" alt="Орлан-белохвост">
+                    <div class="animal-info">
+                        <h3>Орлан-белохвост</h3>
+                        <p>Крупная хищная птица, гнездящаяся около водоёмов. Редкий вид с ограниченной численностью.</p>
+                        <div class="animal-meta">
+                            <span>Размах крыльев: 2-2,5 м</span>
+                            <span class="redbook-badge">Категория 3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Пресмыкающиеся из Красной книги -->
+                <div class="animal-card redbook-card">
+                    <img src="images\33d9a658-c3b2-42b0-be59-61591c12d0e0_800x600.jpg" alt="Желтобрюхий полоз">
+                    <div class="animal-info">
+                        <h3>Желтобрюхий полоз</h3>
+                        <p>Крупная неядовитая змея. Редкий вид, встречающийся на южных склонах балок и в каменистых местах.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 2 м</span>
+                            <span class="redbook-badge">Категория 3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Рыбы из Красной книги -->
+                <div class="animal-card redbook-card">
+                    <img src="images\f_c2RlbGFub3VuYXMucnUvdXBsb2Fkcy81LzUvNTU4MTU2MjYyNDUyOV9vcmlnLmpwZWc_X19pZD0xMjE3OTY=.jpg" alt="Стерлядь">
+                    <div class="animal-info">
+                        <h3>Стерлядь</h3>
+                        <p>Ценная пресноводная рыба семейства осетровых. Численность сокращается из-за загрязнения рек.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 1,2 м</span>
+                            <span class="redbook-badge">Категория 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animal-card redbook-card">
+                    <img src="images\img2452_6.jpg" alt="Украинская минога">
+                    <div class="animal-info">
+                        <h3>Украинская минога</h3>
+                        <p>Редкий вид бесчелюстных. Обитает в чистых реках. Находится под угрозой исчезновения.</p>
+                        <div class="animal-meta">
+                            <span>Длина: до 20 см</span>
+                            <span class="redbook-badge">Категория 1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background-color: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-top: 2rem;">
+                <h3 style="color: var(--redbook-color); margin-top: 0;">Категории Красной книги:</h3>
+                <ul style="columns: 2; column-gap: 2rem;">
+                    <li><strong>0 (Исчезнувшие)</strong> - виды, не встречающиеся в природе</li>
+                    <li><strong>1 (На грани исчезновения)</strong> - под угрозой исчезновения</li>
+                    <li><strong>2 (Сокращающиеся)</strong> - с быстро уменьшающейся численностью</li>
+                    <li><strong>3 (Редкие)</strong> - с естественной низкой численностью</li>
+                    <li><strong>4 (Неопределенные)</strong> - малоизученные виды</li>
+                    <li><strong>5 (Восстанавливающиеся)</strong> - численность восстанавливается</li>
+                </ul>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ Наверх</a>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-links">
+                <a href="#intro">О проекте</a>
+                <a href="#redbook">Охрана природы</a>
+                <a href="mailto:fauna@belgorod.ru">Контакты</a>
+            </div>
+            <p>© 2025 Фауна Белгорода | Материалы сайта могут быть использованы в образовательных целях</p>
+            <p>Фотографии предоставлены Wikimedia Commons</p>
+        </div>
+    </footer>
+</body>
+</html>
